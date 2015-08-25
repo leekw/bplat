@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-file="http://www.springframework.org/schema/integration/file"
+	xmlns:int-jms="http://www.springframework.org/schema/integration/jms"
+	xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	<context:component-scan base-package="com.pp.bplat" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<context:annotation-config />
+
+	<!-- ################ HandlerMapping establishment start ############################## -->
+	<bean id="annotationMapper"
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<description>annotation HandlerMapping 설정</description>
+		<property name="interceptors">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="annotationHandlerAdaptor"
+		class="com.pp.bplat.common.support.web.AsynAnnotationHandlerAdaptor" />
+
+	<!-- ################ viewResoler establishment start ############################## -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
+		<property name="contentType" value="text/html; charset=UTF-8" />
+	</bean>
+
+	<bean id="beanNameViewResolver"
+		class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />
+	</bean>
+
+	<!-- ajax view JSON rendering -->
+
+	<bean name="metadataView" class="com.pp.bplat.common.web.view.ExtendedMetadataView" />
+
+	<!-- <bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>10000000</value>
+		</property>		
+	</bean> -->
+
+	<bean id="fileDownload"
+		class="com.pp.bplat.common.web.view.FileDownloadView">				
+	</bean>
+	
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <description>error message viewResolver 설정</description>
+        <property name="defaultErrorView" value="views/error"/>
+        <property name="exceptionAttribute" value="exception"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="com.pp.bplat.common.exception.PartnerException">views/error</prop>
+                <prop key="java.lang.Exception">views/error</prop>
+                <prop key="com.pp.bplat.common.exception.InterceptorException">views/interceptor</prop>
+                <!-- <prop key="com.kt.nbase.common.exception.impl.SessionException">views/sessionError</prop> 추후 개발 -->
+            </props>
+        </property>
+    </bean>
+    
+</beans>
