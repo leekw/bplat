@@ -26,25 +26,26 @@ import com.pp.bplat.service.test.TestService;
  */
 @Controller
 public class HomeController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(HomeController.class);
+
 	@Autowired
 	TestService testService;
-	
+
 	@RequestMapping(value = "/index.json", method = RequestMethod.GET)
 	public ModelAndView getOrgFactorValueList(
 			@Command(key = "params") Common param,
 			@PathVariable("metadataType") String metadataType,
 			ModelAndView modelAndView, HttpServletRequest request) {
-		
+
 		List<Common> result = new ArrayList<Common>();
-		
+
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("results", result);
+		System.out.println("test");
 		modelAndView.addObject(Constant.RequestKey.PARAM_KEY.getValue(), data);
 		return modelAndView;
 	}
-	
+
 }
