@@ -44,6 +44,7 @@ public class HomeController {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("results", result);
 		modelAndView.addObject(Constant.RequestKey.PARAM_KEY.getValue(), data);
+		System.out.println("aaaaa");
 		return modelAndView;
 	}
 	
