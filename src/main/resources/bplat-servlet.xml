@@ -10,17 +10,19 @@
 	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:lang="http://www.springframework.org/schema/lang"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
-		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
-		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.1.xsd
-		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
-	<context:component-scan base-package="com.pp.bplat" use-default-filters="false">
+	<context:component-scan base-package="com.bplat.web" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	<context:annotation-config />
@@ -35,8 +37,14 @@
 		</property>
 	</bean>
 	
-	<bean id="annotationHandlerAdaptor"
-		class="com.pp.bplat.common.support.web.AsynAnnotationHandlerAdaptor" />
+	<bean id="annotationHandlerAdaptor" class="com.bplat.common.support.util.web.AsynAnnotationHandlerAdaptor" />
+    
+    <websocket:message-broker application-destination-prefix="/app">
+	    <websocket:stomp-endpoint path="/ws">
+	      <websocket:sockjs/>
+	    </websocket:stomp-endpoint>
+    	<websocket:simple-broker prefix="/topic"/>
+  	</websocket:message-broker>
 
 	<!-- ################ viewResoler establishment start ############################## -->
 	<bean id="viewResolver"
@@ -56,7 +64,7 @@
 
 	<!-- ajax view JSON rendering -->
 
-	<bean name="metadataView" class="com.pp.bplat.common.web.view.ExtendedMetadataView" />
+	<bean name="metadataView" class="com.bplat.common.support.util.web.view.ExtendedMetadataView" />
 
 	<!-- <bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -65,9 +73,6 @@
 		</property>		
 	</bean> -->
 
-	<bean id="fileDownload"
-		class="com.pp.bplat.common.web.view.FileDownloadView">				
-	</bean>
 	
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <description>error message viewResolver 설정</description>

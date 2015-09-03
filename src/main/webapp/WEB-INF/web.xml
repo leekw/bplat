@@ -80,7 +80,7 @@
   </filter-mapping>
   <filter>
     <filter-name>xssFilter</filter-name>
-    <filter-class>com.pp.bplat.common.support.web.filter.XSSFilter</filter-class>
+    <filter-class>com.bplat.common.support.util.web.filter.XSSFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>xssFilter</filter-name>
@@ -88,7 +88,7 @@
   </filter-mapping>
   <filter>
     <filter-name>parameterFilter</filter-name>
-    <filter-class>com.pp.bplat.common.support.web.filter.ParameterFilter</filter-class>
+    <filter-class>com.bplat.common.support.util.web.filter.ParameterFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>parameterFilter</filter-name>
